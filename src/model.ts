@@ -3,9 +3,8 @@ import * as tf from "@tensorflow/tfjs";
 export const getModel = (imageShape: number, imageChannels: number, labelsNumber: number) => tf.sequential({
   layers: [
     tf.layers.conv2d({
-      filters: 16,
+      filters: 128,
       kernelSize: 3,
-      strides: 1,
       padding: "same",
       activation: "relu",
       inputShape: [imageShape, imageShape, imageChannels],
@@ -16,9 +15,9 @@ export const getModel = (imageShape: number, imageChannels: number, labelsNumber
       strides: 2,
     }),
     tf.layers.conv2d({
-      filters: 32,
+      filters: 128,
       kernelSize: 3,
-      strides: 1,
+      strides: 2,
       padding: "same",
       activation: "relu",
       kernelInitializer: "varianceScaling",
@@ -40,6 +39,14 @@ export const getModel = (imageShape: number, imageChannels: number, labelsNumber
       strides: 2,
     }),
     tf.layers.flatten(),
+    tf.layers.dropout({
+      rate: 0.2,
+    }),
+    tf.layers.dense({
+      units: 1024,
+      kernelInitializer: "varianceScaling",
+      activation: "relu",
+    }),
     tf.layers.dropout({
       rate: 0.2,
     }),
